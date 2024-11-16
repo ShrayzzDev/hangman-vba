@@ -1,0 +1,22 @@
+﻿'@Folder "VBAProject"
+Option Explicit
+
+Private logic As GameLogic
+Private displayer As IDisplayer
+Private IsStarted As Boolean
+
+Private Sub Worksheet_Change(ByVal Target As Range)
+    If Not IsStarted Or Target.row <> 2 Or Target.column <> 1 Or Target.value = vbNullString Then
+        Exit Sub
+    End If
+    logic.MakeAGuess CStr(Target.value)
+    Target.value = vbNullString
+End Sub
+
+Public Sub OnCreateClicked()
+    Set logic = New GameLogic
+    Set displayer = New ExcelDisplayer
+    logic.Init displayer
+    logic.StartGame "word"
+    IsStarted = True
+End Sub
